@@ -1,8 +1,4 @@
 pipeline {
-    agent {
-        label 'your_agent_label'
-    }
-
     environment {
         // Define variables
         DOCKER_IMAGE       = 'tuchsanai/fastapi-webhook:latest'
