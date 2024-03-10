@@ -13,7 +13,7 @@ pipeline {
         stage('Start Jenkins') {
             steps {
                 // Checkout your source code from version control
-                node {
+                node('any') {
                     sh 'echo Start Jenkins............'
                     sh 'echo docker : user = $DOCKER_CREDENTIALS_USR : password = $DOCKER_CREDENTIALS_PSW'
                 }
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                node {
+                node('any') {
                     // Build the Docker image
                     dir('./03_Jenkins/week13/03_Github_webhook') {
                         sh 'echo "Running in $(pwd)"'
@@ -35,7 +35,7 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                node {
+                node('any') {
                     script {
                         // Login to Docker Hub
                         sh 'echo $DOCKER_CREDENTIALS_PSW | docker login --username $DOCKER_CREDENTIALS_USR --password-stdin'
@@ -48,7 +48,7 @@ pipeline {
 
         stage('Clear Docker Components') {
             steps {
-                node {
+                node('any') {
                     script {
                         // Remove Docker images and containers
                         sh 'docker stop $(docker ps -a -q)'
@@ -62,7 +62,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                node {
+                node('any') {
                     script {
                         // Pull the Docker image from Docker Hub
                         sh 'docker pull $DOCKER_IMAGE'
@@ -77,7 +77,7 @@ pipeline {
     post {
         always {
             // Logout from Docker Hub
-            node {
+            node('any') {
                 sh 'docker logout'
             }
         }
